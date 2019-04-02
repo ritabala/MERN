@@ -4,15 +4,18 @@ var Model = require('../model/licenseModel');
 // console.log(Model)
 
 // get all licenses from database
-exports.get_all_licenses = (req,res)=>{
+exports.get_all_licenses=(req,res)=>{
+    console.log('in fetch all controller')
     Model.fetch_all_licenses(function(err,lic){
         if (err){res.send(err);}
         res.send(lic);
     })
+    // return 'hi'
 }
 
 // get single license from database based upon id
 exports.get_single_license =(req,res)=>{
+    console.log('in single controller',req)
     var fetchId = req.params.id;
     Model.get_single_license(fetchId,(err,lic)=>{
         if(err){res.send(err)}
@@ -43,6 +46,7 @@ exports.update_license =(req,res)=>{
 
 //delete license from database
 exports.delete_license =(req,res)=>{
+    console.log('in delete')
     var delById = req.params.id;
     Model.delete_license(delById,(err,lic)=>{
         if(err){res.send(err)}

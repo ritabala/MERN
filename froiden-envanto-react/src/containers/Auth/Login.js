@@ -1,7 +1,6 @@
 import React ,{Component} from 'react';
 import * as actionTypes from '../../store/actions/index';
 import {connect} from 'react-redux';
-import Spinner from '../../components/Spinner/Spinner';
 import classes from './Login.css';
 
 class Login extends Component{
@@ -13,7 +12,7 @@ class Login extends Component{
                     type:"username",
                     placeholder:"enter your user name"
                 },
-                value:'',
+                value:'rita19',
                 validation:{
                     required:true,
                     length:6
@@ -28,7 +27,7 @@ class Login extends Component{
                     type:"email",
                     placeholder:"enter email address"
                 },
-                value:'',
+                value:'rita@xyz.com',
                 validation:{
                     required:true,
                     isEmail:true
@@ -43,7 +42,7 @@ class Login extends Component{
                     type:"password",
                     placeholder:"enter your passsword"
                 },                    
-                value:'',
+                value:'rita19',
                 validation:{
                     required:true,
                     length:6
@@ -89,6 +88,7 @@ class Login extends Component{
         // console.log(id) // email password 
         const newForm = {...this.state.authForm}
         const newFormFields = {...this.state.authForm[id]}
+
         newFormFields.value = event.target.value
         newFormFields.isValid = this.checkValidity(event.target.value,newFormFields.validation).valid
         newFormFields.errorMessage = this.checkValidity(event.target.value,newFormFields.validation).errorMessage
@@ -132,10 +132,10 @@ class Login extends Component{
          })
 
         let form ='';
-        if (this.props.loading){
-            form=<Spinner/>
-        } 
-        else{
+        // if (this.props.loading){
+        //     form=<Spinner/>
+        // } 
+        // else{
             form=formArray.map((p,index)=>{
                 let inputClass=[];
                 inputClass.push(classes.InputElement);
@@ -157,7 +157,7 @@ class Login extends Component{
                     </div>
                 )
             })
-        }
+        // }
 
         let err='';
         if(this.props.error){

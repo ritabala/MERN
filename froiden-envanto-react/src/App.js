@@ -5,6 +5,9 @@ import Layout from './hoc/Layout/Layout';
 import Login from './containers/Auth/Login';
 import Licenses from './containers/Licenses/Licenses';
 import Dashboard from './containers/Dashboard/Dashboard';
+import Viewlicense from './containers/Licenses/Viewlicense';   
+import Editlicense from './containers/Licenses/Editlicense';   
+import AddLicense from './containers/Licenses/Addlicense';   
 import {connect} from 'react-redux';
 
 
@@ -21,7 +24,10 @@ class App extends Component {
       routes=(
         <Switch>
           <Route path='/dashboard' component={Dashboard}/>
-          <Route path='/licenses' component={Licenses}/>
+          <Route path='/licenses' exact component={Licenses}/>
+          <Route path='/addLicense' component={AddLicense} />
+          <Route path='/licenses/view/:id'  component={Viewlicense}/>
+          <Route path='/licenses/edit/:id' component={Editlicense}/>
           <Redirect to='/dashboard' />
         </Switch>
       )

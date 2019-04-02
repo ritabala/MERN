@@ -1,8 +1,7 @@
 import React from 'react';
 import classes from './Spinner.css';
-import Aux from '../Spinner/Spinner';
 
 const spinner = () =>(
-    <Aux className={classes.Loader}>Loading...</Aux>
+    <div className={classes.Loader}>Loading...</div>
 )
 export default spinner;

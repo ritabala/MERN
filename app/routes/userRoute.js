@@ -1,11 +1,6 @@
-// 'use strict';
-// const express = require('express');
-// const router = express.Router();    
-// const user_control = require('../controller/userController')
-
-// router.get('/login',user_control.user_login);
-// module.exports.router = router;
 'use strict';
+let middleware = require('../../middleware');
+
 module.exports=function(app){
     const user_control = require('../controller/userController')
 

@@ -1,0 +1,63 @@
+  .NavLink{
+    color:black;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+    text-decoration: none;
+    text-justify: right;
+  }
+  /* .NavLink:visited {
+    color:orange;
+  } */
+  .NavLink:hover {
+    color: yellow;
+  }
+  .NavLink:active,
+  .NavLink.active{
+    color: green;
+  }
+
+  
+.Button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  outline: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 10px;
+  /* margin: 1px; */
+  font-weight: bold;
+  
+}
+
+.Button:first-of-type {
+  margin-left: 0;
+  /* padding-left: 0; */
+}
+
+.View {
+  color: #5C9210;
+}
+
+.Edit {
+  color: blue;
+}
+
+.Delete {
+  color: red;
+}
+
+.Cancel {
+  color: black;
+}
+
+.Button:disabled{
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.Text{
+  color:#4a4040;
+  font-size: 13px;
+
+}

@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios';
+import axios from '../../axios';
 
 export const fetchStart=()=>{
     return{
@@ -25,18 +25,35 @@ export const fetchFail=(err)=>{
 export const fetchAllLicenses = (token)=>{
     return dispatch =>{
         dispatch(fetchStart())
-        axios.get('http://localhost:4000/license?auth='+token)  
+        console.log(token)
+        axios.get('/license',{
+            headers: {"Authorization" : `Bearer ${token}`} })
         .then(res=>{
-            console.log(res.data)
             let licenseArray = [];
-            for(let i in res.data){
-                licenseArray.push({
-                    ...res.data[i],
-                    id:i
-                })
+                for (let i in res.data) {
+                    licenseArray.push({
+                        ...res.data[i]
+                    })
             }
-            console.log('Final ',licenseArray)
             dispatch(fetchSuccess(licenseArray))
+
+        })
+        .catch(err=>{
+            console.log(err)
+            dispatch(fetchFail(err))
+        })
+    }
+}
+
+export const fetchOneLicense =(token,id)=>{
+    return dispatch=>{
+        dispatch(fetchStart());
+        axios.get('/license/'+id,{
+            headers: {"Authorization" : `Bearer ${token}`} })
+        .then(res=>{
+            // console.log('in fetch one ',res.data)
+            
+            dispatch(fetchSuccess(res.data))
         })
         .catch(err=>{
             dispatch(fetchFail(err))
@@ -44,3 +61,125 @@ export const fetchAllLicenses = (token)=>{
     }
 }
 
+export const updateLicenseStart =()=>{
+    return({
+        type : actionTypes.UPDATE_LICENSE_START
+    })
+}
+
+export const updateLicenseSuccess=(data)=>{
+    return({
+        type: actionTypes.UPDATE_LICENSE_SUCCESS,
+        result:data
+    })
+}
+
+export const updateLicenseFail =(err)=>{
+    return({
+        type:actionTypes.UPDATE_LICENSE_FAIL,
+        err:err
+    })
+}
+
+
+export const updateLicense = (token,id,newVal)=>{
+    return dispatch=>{
+        dispatch(updateLicenseStart());
+        axios.post('/license/'+id,newVal,{
+            headers:{"Authorization" : `Bearer ${token}`}})
+        .then(res=>{
+            // console.log(newVal)
+            let arr =[];
+            arr.push(newVal);
+            dispatch(updateLicenseSuccess(arr))
+        })
+        .catch(err=>{
+             dispatch(updateLicenseFail(err));
+        })    
+        }
+}
+
+export const deleteLIcenseStart = ()=>{
+    return{
+        type:actionTypes.DELETE_LICENSE_START
+    }
+}
+
+export const deleteLicenseSuccess = (id)=>{
+    return{
+        type:actionTypes.DELETE_LICENSE_SUCCESS,
+        id:id
+    }
+}
+
+export const deleteLicenseFail = (err)=>{
+    return{
+        type:actionTypes.DELETE_LICENSE_FAIL,
+        err:err
+    }
+}
+
+export const deleteLicense =(token,id)=>{
+    return dispatch =>{
+        dispatch(deleteLIcenseStart())
+        axios.delete('/license/'+id,{
+            header:{"Authorization": `Bearer ${token}`}
+        })
+        .then(res=>{
+            // console.log(res.data)
+            dispatch(deleteLicenseSuccess(id))
+        })
+        .catch(err=>{
+            dispatch(deleteLicenseFail(err))
+        })
+    }
+}
+
+export const showModal=(id)=>{
+    return{
+        type:actionTypes.SHOW_MODAL,
+        id:id
+    }
+}
+
+export const cancelModal=(id)=>{
+    return{
+        type:actionTypes.CANCEL_MODAL,
+    }
+}
+
+export const addLicenseStart = ()=>{
+    return{
+        type:actionTypes.ADD_LICENSE_START
+    }
+}
+
+export const addLicenseSuccess = (newLicense)=>{
+    return{
+        type:actionTypes.ADD_LICENSE_SUCCESS,
+        newLicense:newLicense
+    }
+}
+
+export const addLicenseFail = (err)=>{
+    return{
+        type:actionTypes.ADD_LICENSE_FAIL,
+        err:err
+    }
+}
+
+export const addLicense =(token,newLicense)=>{
+    return dispatch =>{
+        dispatch(addLicenseStart())
+        axios.post('/license/',newLicense,{
+            header:{"Authorization": `Bearer ${token}`}
+        })
+        .then(res=>{
+            newLicense.id = res.data.insertId
+            dispatch(addLicenseSuccess(newLicense))
+        })
+        .catch(err=>{
+            dispatch(addLicenseFail(err))
+        })
+    }
+}

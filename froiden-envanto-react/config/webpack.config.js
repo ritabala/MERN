@@ -395,7 +395,7 @@ module.exports = function(webpackEnv) {
                 importLoaders: 1,
                 sourceMap: isEnvProduction && shouldUseSourceMap,
                 modules:true,
-                localIdentName:'[name]_[local]_[hash:base 64:5]'
+                localIdentName:'[name]_[local]_[hash:64:5]'
               }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.

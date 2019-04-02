@@ -1,5 +1,4 @@
 import React from 'react';
-import Aux from '../../hoc/Auxiliary/Auxiliary';
 import { NavLink } from 'react-router-dom';
 import classes from './Toolbar.css';
 const toolbar = (props) => {

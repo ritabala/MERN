@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios';
+import axios from '../../axios';
 
 export const authStart=()=>{
     return{
@@ -29,7 +29,7 @@ export const logOut=()=>{
     //     type: actionTypes.LOG_OUT
     // }
     return dispatch=>{
-        axios.post('http://localhost:4000/logout')
+        axios.post('/logout')
         .then(res=>{
             dispatch (logOut_Reducer())
         })
@@ -59,15 +59,13 @@ export const auth = (userName,email,password,isSignIn)=>{
              email:email,
              pwd:password
         }
-        console.log(userData)
-        let url = 'http://localhost:4000/login';
+        
+        let url = '/login';
         if(!isSignIn){
-            console.log('in register ', isSignIn)
-            url = 'http://localhost:4000/register';
+            url = '/register';
         }
         axios.post(url,userData)
         .then(res=>{
-            console.log('after post ',res)
             localStorage.setItem('token',res.data.token)
             localStorage.setItem('auth',res.data.auth)
             dispatch(authSuccess(res.data.token,res.data.auth))
@@ -75,8 +73,7 @@ export const auth = (userName,email,password,isSignIn)=>{
             // dispatch(setTimeoutFn())
         })
         .catch(err=>{
-            console.log(err)
-            dispatch(authFail(err))
+            dispatch(authFail(err.message))
         })
     }
 }
