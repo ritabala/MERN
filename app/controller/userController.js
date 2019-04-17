@@ -1,9 +1,10 @@
 'use strict';
-var Model =require('../model/userModel');
+const Model =require('../model/userModel');
 // var md5 = require('md5');
-var jwt=require('jsonwebtoken');
-var bcrypt=require('bcrypt');
-var confiq=require('../../confiq')
+const jwt=require('jsonwebtoken');
+const bcrypt=require('bcrypt');
+const confiq=require('../../confiq')
+const tokenList = {}
 
 
 exports.get_user = (req,res)=>{
@@ -17,19 +18,29 @@ exports.get_user = (req,res)=>{
         
         //compare password
         var passwordIsValid = bcrypt.compareSync(pwd, user[0].password);
-        console.log('passwordIsValid',passwordIsValid )
+        // console.log('passwordIsValid',passwordIsValid )
 
         //invalid password
         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null ,message:'Invalid password'});
         //create token    
-        console.log(user)
 
-        var token = jwt.sign({ id: user[0].id }, 
+        const token = jwt.sign({ id: user[0].id }, 
                                 confiq.secret, 
-                               {expiresIn: 3600} // expires in 1 hour
+                               {expiresIn: 30} // expires in 1 hour / in seconds
         );
-        console.log(token)
-        res.status(200).send({ auth: true, token: token,user ,message:'Authentication Successful'});             
+        
+        const response = {
+            auth: true, 
+            token: token,
+            // refreshToken: refreshToken,
+            user ,
+            message:'Authentication Successful'
+        }
+
+        // tokenList[refreshToken] = response;
+
+        // res.status(200).send({ auth: true, token: token,refreshToken,user ,message:'Authentication Successful'}); 
+        res.status(200).send(response)            
             // res.send(user);
     })
 }
@@ -56,5 +67,27 @@ exports.add_user=(req,res) =>{
 }
 
 exports.logout=(req,res)=>{
-    res.status(200).send({ auth: false, token: null,user });
+    res.status(200).send({ auth: false, token: null });
+}
+exports.refresh_token=(req,res)=>{
+    console.log('in refresh token route')
+    const userId = req.decoded.id;
+    Model.user_from_id(userId,function(err,user){
+        if (err){res.send(err)}
+    
+    // const refreshToken= jwt.sign({id:user[0].id},
+    //         confiq.refreshTokenSecret,{ expiresIn: confiq.refreshTokenLife });
+    
+    const token = jwt.sign({ id: user[0].id }, 
+                confiq.secret, 
+               {expiresIn: 3600} // expires in 1 hour / in seconds        
+    );
+    const response = {
+        auth: true, 
+        token: token,
+        user ,
+        message:'Authentication Successful'
+    }
+    res.status(200).send(response)       
+})     
 }

@@ -15,7 +15,7 @@ const rootReducer= combineReducers({
     license : licenseReducer
 })
 //used for redux devtools extension in browser . If in development mode then use redux devtools extenstion compose
-// const composeEnhancers = process.env.NODE_ENV ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :null || compose;
+// const composeEnhancers = process.env.NODE_ENV === 'development'? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :null || compose;
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)));
 

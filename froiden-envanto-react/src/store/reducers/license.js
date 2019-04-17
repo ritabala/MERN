@@ -10,7 +10,8 @@ const initialState = {
 const fetchStart = (state,action)=>{
     return{
         ...state,
-        loading:true
+        loading:true,
+        licenses:[]
         }
 }
 

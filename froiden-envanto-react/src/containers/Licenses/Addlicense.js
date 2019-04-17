@@ -1,7 +1,6 @@
 import React ,{Component} from 'react';
 import {connect} from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
-import Spinner from '../../components/Spinner/Spinner';
 
 
 class editLicense extends Component {

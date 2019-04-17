@@ -27,4 +27,12 @@ User.user_register =(user,email,pwd,result)=>{
         }
     })
 }
+
+User.user_from_id = (id,result)=>{
+    sql.query('SELECT * from users where id =?',id,function(err,data){
+        if(err){result(null,err)}
+            result(null,data)
+    })
+}
+
 module.exports = User;

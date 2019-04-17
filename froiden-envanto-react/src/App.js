@@ -9,9 +9,14 @@ import Viewlicense from './containers/Licenses/Viewlicense';
 import Editlicense from './containers/Licenses/Editlicense';   
 import AddLicense from './containers/Licenses/Addlicense';   
 import {connect} from 'react-redux';
-
+import Logout from './containers/Auth/Logout';
+import * as actionCreators from './store/actions/index';
 
 class App extends Component {
+  componentDidMount(){
+    this.props.ontrySignUp();
+  }
+
   render() {
     let routes=(
       <Switch>
@@ -26,6 +31,7 @@ class App extends Component {
           <Route path='/dashboard' component={Dashboard}/>
           <Route path='/licenses' exact component={Licenses}/>
           <Route path='/addLicense' component={AddLicense} />
+          <Route path='/logout' exact component={Logout}/>
           <Route path='/licenses/view/:id'  component={Viewlicense}/>
           <Route path='/licenses/edit/:id' component={Editlicense}/>
           <Redirect to='/dashboard' />
@@ -44,8 +50,14 @@ class App extends Component {
 
 const mapStateToProps=state=>{
   return{
-    isAuth:state.auth.isAuth
+    isAuth:state.auth.isAuth,
   }
 }
 
-export default withRouter(connect(mapStateToProps,null)(App));
+const mapDispatchToProps=dispatch=>{
+  return{
+    ontrySignUp : ()=>dispatch(actionCreators.autoSignupOnRefresh())
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));

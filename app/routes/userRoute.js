@@ -13,4 +13,7 @@ app.route('/register')
 app.route('/logout')
     .post(user_control.logout)
 
+app.route('/refresh_token')
+    .all(middleware.checkToken)
+    .get(user_control.refresh_token)
 }

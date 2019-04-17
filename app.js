@@ -14,7 +14,14 @@ app.use(function(req, res, next) {
     next();
   });
 
-// parse requests of content-type - application/x-www-form-urlencoded
+// parse requests of content-type - application/x-www-form-urlencoded   extended is false : string/array type
+// A new body object containing the parsed data is populated on the request object after the middleware (i.e. req.body). 
+// This object will contain key-value pairs, where the value can be a string or array (when extended is false), or any type (when extended is true).
+
+// https://stackoverflow.com/questions/29960764/what-does-extended-mean-in-express-4-0
+// input : "person[name]=bobby&person[age]=3"
+// false : { 'person[age]': '3', 'person[name]': 'bobby'}  use queryString.parse
+// true: { person: { name: 'bobby', age: '3' } }           use qs.parse
 app.use(bodyParser.urlencoded({extended:true}))
 
 // parse requests of content-type - application/json

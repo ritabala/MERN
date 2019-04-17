@@ -32,6 +32,7 @@ onCancelModalHandler =(event)=>{
 }
 
 onDeleteModalHandler=(event)=>{
+    console.log(this.props.token)
     this.props.deleteLicense(this.props.token,this.props.id)
     this.props.onCancelModal()
     
@@ -50,7 +51,7 @@ componentDidMount=()=>{
         }
     else{
          license = this.props.licenses.map((item,index)=>{
-            console.log(item.id)
+            // console.log(item.id)
             return(
                 <tr key={item+index}>
                     <td>{item.item_name}</td>

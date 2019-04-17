@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios';
+import { logout } from './auth';
 
 export const fetchStart=()=>{
     return{
@@ -29,6 +30,11 @@ export const fetchAllLicenses = (token)=>{
         axios.get('/license',{
             headers: {"Authorization" : `Bearer ${token}`} })
         .then(res=>{
+            console.log(res.data)
+            if(res.data.error){
+
+                dispatch(logout())
+            }
             let licenseArray = [];
                 for (let i in res.data) {
                     licenseArray.push({
@@ -48,11 +54,14 @@ export const fetchAllLicenses = (token)=>{
 export const fetchOneLicense =(token,id)=>{
     return dispatch=>{
         dispatch(fetchStart());
+        
         axios.get('/license/'+id,{
             headers: {"Authorization" : `Bearer ${token}`} })
         .then(res=>{
             // console.log('in fetch one ',res.data)
-            
+            if(res.data.error){
+                dispatch(logout())
+            }
             dispatch(fetchSuccess(res.data))
         })
         .catch(err=>{
@@ -89,6 +98,9 @@ export const updateLicense = (token,id,newVal)=>{
             headers:{"Authorization" : `Bearer ${token}`}})
         .then(res=>{
             // console.log(newVal)
+            if(res.data.error){
+                dispatch(logout())
+            }
             let arr =[];
             arr.push(newVal);
             dispatch(updateLicenseSuccess(arr))
@@ -123,13 +135,17 @@ export const deleteLicense =(token,id)=>{
     return dispatch =>{
         dispatch(deleteLIcenseStart())
         axios.delete('/license/'+id,{
-            header:{"Authorization": `Bearer ${token}`}
+            headers:{"Authorization": `Bearer ${token}`}
         })
         .then(res=>{
-            // console.log(res.data)
+            console.log(res.data)
+            if(res.data.error){
+                dispatch(logout())
+            }
             dispatch(deleteLicenseSuccess(id))
         })
         .catch(err=>{
+            console.log(err)
             dispatch(deleteLicenseFail(err))
         })
     }
@@ -172,9 +188,12 @@ export const addLicense =(token,newLicense)=>{
     return dispatch =>{
         dispatch(addLicenseStart())
         axios.post('/license/',newLicense,{
-            header:{"Authorization": `Bearer ${token}`}
+            headers:{"Authorization": `Bearer ${token}`}
         })
         .then(res=>{
+            if(res.data.error){
+                dispatch(logout())
+            }
             newLicense.id = res.data.insertId
             dispatch(addLicenseSuccess(newLicense))
         })

@@ -32,29 +32,23 @@ const authFail = (state,action)=>{
     }
 }
 
-const logOut = (state,action)=>{
+const logout = (state,action)=>{
     return{
         ...state,
         loading:false,
         error:null,
-        idToken:null
+        idToken:null,
+        isAuth:false
     }
 }
 
-// const authRedirectUrl = (state,action)=>{
-//     return{
-//         ...state,
-//         authRedirectUrl:action.url,
-//     }
-// }
 
 const reducer = (state=initialState,action)=>{
     switch(action.type){
         case actionTypes.AUTH_START: return authStart(state,action)
         case actionTypes.AUTH_SUCCESS: return authSuccess(state,action)
         case actionTypes.AUTH_FAIL :     return authFail(state,action)
-        case actionTypes.LOG_OUT : return logOut(state,action)
-        // case actionTypes.AUTH_REDIRECT_URL : return authRedirectUrl(state,action)
+        case actionTypes.LOG_OUT : return logout(state,action)
         default: {return state}
     }
 }

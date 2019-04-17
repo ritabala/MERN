@@ -22,14 +22,12 @@ export const authFail=(err)=>{
     }
 }
 
-export const logOut=()=>{
+export const logout=(token)=>{
     localStorage.removeItem('token')
     localStorage.removeItem('auth')
-    // return{
-    //     type: actionTypes.LOG_OUT
-    // }
     return dispatch=>{
-        axios.post('/logout')
+        axios.post('/logout',{
+            headers: {"Authorization" : `Bearer ${token}`} })
         .then(res=>{
             dispatch (logOut_Reducer())
         })
@@ -69,8 +67,6 @@ export const auth = (userName,email,password,isSignIn)=>{
             localStorage.setItem('token',res.data.token)
             localStorage.setItem('auth',res.data.auth)
             dispatch(authSuccess(res.data.token,res.data.auth))
-            // dispatch(authRedirectUrl('/dashboard'))
-            // dispatch(setTimeoutFn())
         })
         .catch(err=>{
             dispatch(authFail(err.message))
@@ -78,9 +74,32 @@ export const auth = (userName,email,password,isSignIn)=>{
     }
 }
 
-// export const authRedirectUrl = (path)=>{
-//     return ({
-//         type: actionTypes.AUTH_REDIRECT_URL,
-//         url:path
-//     })
-// }
+export const autoSignupOnRefresh = ()=>{
+    return dispatch=>{
+        const token=localStorage.getItem('token')
+        const isAuth=localStorage.getItem('auth')
+
+        if(!token || token==null){
+            return;
+        }
+        else{
+            console.log('in auto signup: ' , isAuth)
+        // dispatch(meFromToken(token))
+        axios.get('/refresh_token',
+                   { headers: {"Authorization" : `Bearer ${token}`} }
+                 )
+            .then((res) => {
+                console.log(res)
+                if (!res.data.error) {
+                    //store token 
+                    localStorage.setItem('token', res.data.token);
+                    dispatch(authSuccess(res.data.token,res.data.auth))
+                } else {
+                    //remove token from storage
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('isAuth');
+                    // dispatch(authFail(error.message))
+                }
+            });
+    }}
+}

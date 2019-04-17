@@ -29,11 +29,9 @@ License.object_data=123; // just for understanding
 License.fetch_all_licenses = (result)=>{
     sql.query('Select * from licenses',function(err,res){
         if(err){
-            // console.log('error',err)
             result(null,err)
         }
         else{
-            // console.log('licenses : ',result)
              result(null,res);
         }
     })
